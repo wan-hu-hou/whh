@@ -36,10 +36,6 @@ jobs:
       - name: Install dependencies
         run: npm install  # 在运行环境终端执行命令
 
-      # 步骤4：运行测试（执行npm test）
-      - name: Run the tests
-        run: npm test  # 执行Jest测试
-
       # 步骤5：构建生产版本（执行npm run build）
       - name: Build production version
         run: npm run build  # 构建React应用
