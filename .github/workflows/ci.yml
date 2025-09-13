@@ -1,0 +1,45 @@
+# 工作流名称（可自定义，将显示在GitHub Actions页面）
+name: CI_action
+
+# 触发条件：当代码推送到main分支或收到针对main分支的拉取请求时
+on:
+  push:
+    branches: [main]  # 推送（push）触发分支
+  pull_request:
+    branches: [main]  # 拉取请求（pull request）触发分支
+
+# 定义工作流中的任务（jobs）
+jobs:
+  # 任务名称：build（可自定义）
+  build:
+    # 任务运行环境：使用最新版Ubuntu系统（GitHub提供的虚拟环境）
+    runs-on: ubuntu-latest
+
+    # 构建矩阵：用于多环境测试（此处仅测试Node.js 12.x版本，可扩展多个版本）
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    # 任务步骤（按顺序执行）
+    steps:
+      # 步骤1：拉取仓库代码到运行环境
+      - name: Checkout repository
+        uses: actions/checkout@v2  # 使用GitHub官方提供的“拉取代码”动作
+
+      # 步骤2：安装指定版本的Node.js
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1  # 使用GitHub官方提供的“安装Node.js”动作
+        with:
+          node-version: ${{ matrix.node-version }}  # 从构建矩阵中获取Node.js版本
+
+      # 步骤3：安装项目依赖（执行npm install）
+      - name: Install dependencies
+        run: npm install  # 在运行环境终端执行命令
+
+      # 步骤4：运行测试（执行npm test）
+      - name: Run the tests
+        run: npm test  # 执行Jest测试
+
+      # 步骤5：构建生产版本（执行npm run build）
+      - name: Build production version
+        run: npm run build  # 构建React应用
