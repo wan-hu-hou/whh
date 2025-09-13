@@ -18,7 +18,7 @@ jobs:
     # 构建矩阵：用于多环境测试（此处仅测试Node.js 12.x版本，可扩展多个版本）
     strategy:
       matrix:
-        node-version: [12.x]
+        node-version: [14.x]
 
     # 任务步骤（按顺序执行）
     steps:
